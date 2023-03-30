@@ -10,17 +10,19 @@ Help()
   echo "options:"
   echo "  -m <method>    Method to use: GET, POST, PUT, DELETE"
   echo "  -e <endpoint>  Endpoint: assets, loans"
+  echo "  -i <asset ID>  Asset ID: numerical ID used to return a single asset"
   echo "  -b <body>      Body: JSON string of data to send via PUT or POST"
   echo "  -h             Print this Help."
   echo
 }
 
-while getopts m:e:b:h flag
+while getopts m:e:b:i:h flag
 do
   case "${flag}" in
     m) METHOD=${OPTARG};;
     e) ENDPOINT=${OPTARG};;
     b) BODY=${OPTARG};;
+    i) ID=${OPTARG};;
     h) Help
        exit;;
   esac
@@ -63,6 +65,10 @@ fi
 
 URL="https://www.reftab.com/api/$ENDPOINT"
 DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+if ! [ -z "$ID" ] && [ "$ENDPOINT" = "assets" ]; then
+  URL="$URL/$ID"
+fi
 
 if [ -z "$BODY" ]; then
   CONTENTHASH=""
