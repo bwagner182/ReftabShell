@@ -70,6 +70,10 @@ if ! [ -z "$ID" ] && [ "$ENDPOINT" = "assets" ]; then
   URL="$URL/$ID"
 fi
 
+if [ "$ENDPOINT" = "locations" ] && ! [ -z "$ID" ]; then
+  URL="$URL/$ID/assets"
+fi
+
 if [ -z "$BODY" ]; then
   CONTENTHASH=""
   CONTENTTYPE=""
